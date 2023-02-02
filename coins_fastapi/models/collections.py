@@ -16,6 +16,7 @@ class CollectionGet(BaseCollection):
     id: int
 
 class Collection(CollectionGet):
+    coins_list: dict[int, dict]
 
     class Config:
         orm_mode = True
