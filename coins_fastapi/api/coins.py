@@ -1,9 +1,8 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, status
 
 from .. import models
-from ..database import get_session
 
 from ..services.auth import get_current_user
 from ..services.coins import CoinsService
