@@ -1,7 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
 
-from .database import start_base
 from .settings import config
 from . import api
 
@@ -14,11 +13,8 @@ app = FastAPI(
 app.include_router(api.router)
 
 def start():
-    start_base()
     uvicorn.run(
         app, 
         host=config.server_host,
         port=config.server_port
     )
-
-
