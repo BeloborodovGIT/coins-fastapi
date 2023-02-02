@@ -20,6 +20,12 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/sign-in/')
 def get_current_user(token: str = Depends(oauth2_scheme)) -> models.User:
     return AuthService.verify_token(token)
 
+def check_admin(user: models.User = Depends(get_current_user)) -> models.User:
+    if user.role == database.RoleENUM.ADMIN:
+        return user
+    else:
+        raise HTTPException(status.HTTP_403_FORBIDDEN)
+
 
 class AuthService:
     @classmethod

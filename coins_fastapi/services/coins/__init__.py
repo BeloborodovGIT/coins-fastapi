@@ -1,15 +1,13 @@
 from typing import List, Optional
 from fastapi import Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 
 from ...database import *
 
 from ... import models
 
 
-class CoinsService():
-    def __init__(self, session: AsyncSession = Depends(get_session)):
+class CoinsService:
+    def __init__(self, session: Session = Depends(get_session)):
         self.session = session
 
     def get_many(self, user: models.User) -> List[Coins]:

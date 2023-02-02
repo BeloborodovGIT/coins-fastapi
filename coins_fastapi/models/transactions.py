@@ -1,23 +1,21 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class BaseTransaction(BaseModel):
-    from_user_id: int
     to_user_id: int
     coin_id: int
-    datetime: int
-    description: int
+    description: str
 
-class CreateTransaction(BaseTransaction):
+class TransactionCreate(BaseTransaction):
     pass
 
-class UpdateTransaction(BaseTransaction):
-    pass
-
-class GetTransaction(BaseTransaction):
-    owner_id: int
-
-class Transaction(GetTransaction):
+class TransactionGet(BaseTransaction):
     id: int
+    from_user_id: int
+    datetime: datetime
+
+class Transaction(TransactionGet):
+    pass
 
     class Config:
         orm_mode = True

@@ -1,23 +1,37 @@
-from pydantic import BaseModel
+from typing import List
 
-class BaseTransaction(BaseModel):
-    from_user_id: int
-    to_user_id: int
-    coin_id: int
-    datetime: int
-    description: int
+from fastapi import APIRouter, Depends, status
 
-class CreateTransaction(BaseTransaction):
-    pass
+from .. import models
 
-class UpdateTransaction(BaseTransaction):
-    pass
+from ..services.auth import check_admin
+from ..services.transactions import TransactionsService
 
-class GetTransaction(BaseTransaction):
-    owner_id: int
 
-class Transaction(GetTransaction):
-    id: int
+router = APIRouter(
+    prefix='/transactions',
+    tags=['transactions']
+)
 
-    class Config:
-        orm_mode = True
+@router.get('/', response_model=List[models.Transaction])
+def get_transactions(
+    user: models.User = Depends(check_admin),
+    transaction_service: TransactionsService = Depends()
+    ):
+    return transaction_service.get_many()
+
+@router.get('/{transaction_id}', response_model=models.Transaction)
+def get_transaction(
+    transaction_id: int,
+    user: models.User = Depends(check_admin),
+    transaction_service: TransactionsService = Depends()
+    ):
+    return transaction_service.get(transaction_id)
+
+@router.post('/', response_model=models.Transaction, status_code=status.HTTP_404_NOT_FOUND)
+def create_transaction(
+    transaction_data: models.TransactionCreate,
+    user: models.User = Depends(check_admin),
+    transaction_service: TransactionsService = Depends()
+    ):
+    return transaction_service.create(transaction_data)
