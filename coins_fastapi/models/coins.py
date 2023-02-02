@@ -1,15 +1,14 @@
 from pydantic import BaseModel
 
 class BaseCoin(BaseModel):
-    serial: str
+    serial: int
     year_of_issue: str
-    country_of_issue: str
-    mint: str
+    country_of_issue_id: int
+    mint_id: int
     face_price: str
-    currency: str
-    type: str
+    currency_id: int
+    type_id: int
     description: str
-    owner_id: int
 
 class CreateCoin(BaseCoin):
     pass
@@ -18,9 +17,9 @@ class UpdateCoin(BaseCoin):
     pass
 
 class GetCoin(BaseCoin):
-    pass
+    owner_id: int
 
-class Coin(BaseCoin):
+class Coin(GetCoin):
     id: int
 
     class Config:

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from ..database.users import RoleENUM
 
 
 class BaseUser(BaseModel):
@@ -12,6 +13,7 @@ class UserCreate(BaseUser):
 
 class User(BaseUser):
     id: int
+    role: RoleENUM
 
     class Config:
         orm_mode = True
