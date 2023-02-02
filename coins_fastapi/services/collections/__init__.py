@@ -53,16 +53,14 @@ class CollectionsService:
         self.session.add(link)
         self.session.commit()
 
-        collection_link: Collections = (
+        collection: Collections = (
             self.session
             .query(Collections)
-            .join(LinkCoinsToCollections)
-            .join(Coins)
+            .filter(Collections.id == collection_id)
             .first()
         )
-        print(**collection_link)
 
-        return collection_link
+        return collection
 
 
 

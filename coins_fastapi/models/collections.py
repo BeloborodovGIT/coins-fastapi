@@ -16,7 +16,6 @@ class CollectionGet(BaseCollection):
     id: int
 
 class Collection(CollectionGet):
-    coins: list[Coin]
 
     class Config:
         orm_mode = True

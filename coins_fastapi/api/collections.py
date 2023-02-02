@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, status
 
 from .. import models
 
@@ -28,7 +28,11 @@ def get_collections(
     ):
     return collections_service.get(user, collection_id)
 
-@router.post('/{collection_id}', response_model=models.Collection)
+@router.post(
+    '/{collection_id}', 
+    response_model=models.Collection, 
+    status_code=status.HTTP_201_CREATED
+    )
 def append_to_collections(
     collection_id: int,
     coin_data: models.CollectionAppend,
@@ -36,6 +40,14 @@ def append_to_collections(
     collection_service: CollectionsService = Depends()
     ):
     return collection_service.add(user, collection_id, coin_data.coin_id)
+
+@router.get('/{collection_id}/import')
+def import_collection(
+    collection_id: int,
+    user: models.User = Depends(get_current_user),
+    collection_service: CollectionsService = Depends()
+    ):
+    return {'message': 'i`m teapot'}
 
 
 @router.post('/', response_model=models.Collection)
