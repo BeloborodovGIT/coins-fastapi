@@ -7,6 +7,6 @@ class TypesOfCoins(Base):
     __tablename__ = 'types_of_coins'
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
-    value = sa.Column(sa.String)
+    name = sa.Column(sa.String)
 
     

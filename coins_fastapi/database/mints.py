@@ -7,6 +7,6 @@ class Mints(Base):
     __tablename__ = 'mints'
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
-    value = sa.Column(sa.String)
+    name = sa.Column(sa.String)
 
     

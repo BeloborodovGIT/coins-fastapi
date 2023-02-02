@@ -10,7 +10,7 @@ class Transactions(Base):
     from_user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
     to_user_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
     coin_id = sa.Column(sa.Integer, sa.ForeignKey('coins.id'))
-    datetime = sa.Column(sa.DateTime)
+    datetime = sa.Column(sa.DateTime, nullable=False)
     description = sa.Column(sa.String)
 
     from_user = relationship('Users', foreign_keys=from_user_id)

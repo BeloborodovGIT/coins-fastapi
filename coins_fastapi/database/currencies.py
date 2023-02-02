@@ -7,6 +7,6 @@ class Currencies(Base):
     __tablename__ = 'currencies'
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
-    value = sa.Column(sa.String)
+    name = sa.Column(sa.String)
 
     

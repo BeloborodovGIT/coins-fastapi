@@ -15,7 +15,7 @@ class Coins(Base):
     currency_id = sa.Column(sa.Integer, sa.ForeignKey('currencies.id'))
     type_id = sa.Column(sa.Integer, sa.ForeignKey('types_of_coins.id'))
     description = sa.Column(sa.String)
-    owner_id = sa.Column(sa.Integer)
+    owner_id = sa.Column(sa.Integer, sa.ForeignKey('users.id'))
 
     country_of_issue = relationship('Countries', foreign_keys=country_of_issue_id)
     mint = relationship('Mints', foreign_keys=mint_id)
