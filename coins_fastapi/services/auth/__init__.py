@@ -1,13 +1,6 @@
-from datetime import (
-    datetime,
-    timedelta,
-)
+from datetime import datetime, timedelta
 
-from fastapi import (
-    Depends,
-    HTTPException,
-    status,
-)
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.hash import bcrypt
@@ -18,9 +11,6 @@ from ... import models
 
 from ... import database
 
-from .. import DatabaseService
-
-from ...database import session_factory
 from ...settings import config
 
 
@@ -31,7 +21,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> models.User:
     return AuthService.verify_token(token)
 
 
-class AuthService(DatabaseService):
+class AuthService:
     @classmethod
     def verify_password(cls, plain_password: str, hashed_password: str) -> bool:
         return bcrypt.verify(plain_password, hashed_password)
@@ -83,10 +73,10 @@ class AuthService(DatabaseService):
         )
         return models.Token(access_token=token)
 
-    def __init__(self, session: Session = Depends(session_factory)):
+    def __init__(self, session: Session = Depends(database.get_session)):
         self.session = session
 
-    async def register_new_user(
+    def register_new_user(
         self,
         user_data: models.UserCreate,
     ) -> models.Token:
@@ -96,10 +86,11 @@ class AuthService(DatabaseService):
             password_hash=self.hash_password(user_data.password),
         )
         self.session.add(user)
-        await self.session.commit()
+        self.session.commit()
+
         return self.create_token(user)
 
-    async def authenticate_user(
+    def authenticate_user(
         self,
         name: str,
         password: str,
@@ -111,7 +102,7 @@ class AuthService(DatabaseService):
         )
 
         user: database.Users = (
-            await self.session
+            self.session
             .query(database.Users)
             .filter(database.Users.name == name)
             .first()
