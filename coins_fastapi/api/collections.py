@@ -28,6 +28,14 @@ def get_collections(
     ):
     return collections_service.get(user, collection_id)
 
+@router.post('/', response_model=models.Collection)
+def create_collection(
+    collection_data: models.CollectionCreate,
+    user: models.User = Depends(get_current_user),
+    collections_service: CollectionsService = Depends()
+    ):
+    return collections_service.create(user, collection_data)
+
 @router.post(
     '/{collection_id}', 
     response_model=models.Collection, 
@@ -48,12 +56,3 @@ def import_collection(
     collection_service: CollectionsService = Depends()
     ):
     return {'message': 'i`m teapot'}
-
-
-@router.post('/', response_model=models.Collection)
-def create_collection(
-    collection_data: models.CollectionCreate,
-    user: models.User = Depends(get_current_user),
-    collections_service: CollectionsService = Depends()
-    ):
-    return collections_service.create(user, collection_data)

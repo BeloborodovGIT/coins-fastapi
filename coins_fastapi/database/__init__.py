@@ -14,15 +14,13 @@ session_item: Session = sessionmaker(
 )
 
 
-def get_session():
+def get_session() -> Session:
     session = session_item()
     try:
         yield session
     finally:
         session.close()
 
-def start_base():
-        Base.metadata.create_all(bind=engine)
 
 
 from .coins import *
