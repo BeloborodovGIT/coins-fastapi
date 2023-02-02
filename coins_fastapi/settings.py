@@ -24,7 +24,7 @@ class Config(BaseSettings):
 
     @property
     def db_connetion_string(self):
-        return f'postgresql+asyncpg://{self.db_login}:{self.db_password}@{self.db_address}/{self.db_name}'
+        return f'postgresql+psycopg2://{self.db_login}:{self.db_password}@{self.db_address}/{self.db_name}'
 
 
 config = Config(

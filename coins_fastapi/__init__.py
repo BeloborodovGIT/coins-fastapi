@@ -1,5 +1,4 @@
 import uvicorn
-import asyncio
 from fastapi import FastAPI
 
 from .database import start_base
@@ -15,7 +14,7 @@ app = FastAPI(
 app.include_router(api.router)
 
 def start():
-    asyncio.run(start_base())
+    start_base()
     uvicorn.run(
         app, 
         host=config.server_host,

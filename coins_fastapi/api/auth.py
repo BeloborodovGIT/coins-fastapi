@@ -1,16 +1,10 @@
-from fastapi import (
-    APIRouter,
-    Depends,
-    status,
-)
+from fastapi import APIRouter, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
 
 from .. import models
-from ..services.auth import (
-    AuthService,
-    get_current_user,
-)
-
+from ..services.auth import AuthService, get_current_user
+from ..database import get_session
 
 router = APIRouter(
     prefix='/auth',
@@ -23,11 +17,11 @@ router = APIRouter(
     response_model=models.Token,
     status_code=status.HTTP_201_CREATED,
 )
-async def sign_up(
+def sign_up(
     user_data: models.UserCreate,
-    auth_service: AuthService = Depends(),
+    session: Session = Depends(get_session)
 ):  
-    return await auth_service.register_new_user(user_data)
+    return AuthService(session).register_new_user(user_data)
 
 
 @router.post(
@@ -36,9 +30,9 @@ async def sign_up(
 )
 def sign_in(
     auth_data: OAuth2PasswordRequestForm = Depends(),
-    auth_service: AuthService = Depends(),
+    session: Session = Depends(get_session)
 ):
-    return auth_service.authenticate_user(
+    return AuthService(session).authenticate_user(
         auth_data.username,
         auth_data.password,
     )
