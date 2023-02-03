@@ -7,7 +7,7 @@ from . import api
 app = FastAPI(
     title='Coins-FastAPI',
     description='Сервис учёта коллекций нумизамтами',
-    version='0.0.1',
+    version='0.1.1',
 )
 
 app.include_router(api.router)
